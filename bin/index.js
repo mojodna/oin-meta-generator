@@ -3,6 +3,7 @@
 var fs = require('fs');
 
 var gdalinfo = require('gdalinfo-json');
+require('epipebomb')();
 var yargs = require('yargs');
 
 var applyGdalinfo = require('../lib/apply-gdalinfo');
@@ -68,20 +69,30 @@ var filename = argv._[0];
 var metadata = {
   uuid: argv.uuid,
   title: argv.title,
-  acquisition_start: new Date(argv.acquisitionStart) || null,
-  acquisition_end: new Date(argv.acquisitionEnd) || null,
   platform: argv.platform,
   provider: argv.provider,
   contact: argv.contact,
   uploaded_at: new Date(argv.uploadedAt) || null,
-  properties: argv.additionalMetadata.reduce(function (obj, pair) {
-    var parts = pair.split("=", 2);
+  properties: (argv.additionalMetadata || []).reduce(function (obj, pair) {
+    var parts = pair.split('=', 2);
 
     obj[parts[0]] = parts[1];
 
     return obj;
   }, {})
 };
+
+if (argv.acquisitionStart) {
+  metadata.acquisition_start = new Date(argv.acquisitionStart);
+}
+
+if (argv.acquisitionEnd) {
+  metadata.acquisition_end = new Date(argv.acquisitionEnd);
+}
+
+if (argv.uploadedAt) {
+  metadata.uploaded_at = new Date(argv.uploadedAt);
+}
 
 // filter out null values
 metadata = Object.keys(metadata)

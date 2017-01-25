@@ -26,6 +26,7 @@
   "homepage": "https://github.com/openimagerynetwork/oam-meta-generator",
   "dependencies": {
     "envloader": "0.0.2",
+    "epipebomb": "^1.0.0",
     "fs-extra": "^0.18.3",
     "gdalinfo-json": "github:mojodna/gdalinfo-json#upgrade-gdal",
     "lodash": "^3.8.0",
